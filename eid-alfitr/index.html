@@ -1,0 +1,207 @@
+.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eid Al-Fitr Greeting Card</title>
+  <style>
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+      background:#f5f7fb;
+      color:#111827;
+    }
+    .page{max-width:1000px;margin:0 auto;padding:28px 18px 48px;}
+    .back-btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 16px; border-radius:14px;
+      background:#fff; border:1px solid rgba(17,24,39,0.08);
+      color:#111827; text-decoration:none; font-size:14px; font-weight:600;
+      box-shadow:0 10px 30px rgba(15,23,42,0.05);
+    }
+    .card{
+      margin-top:18px; background:#fff; border-radius:28px; padding:28px;
+      box-shadow:0 20px 50px rgba(15,23,42,0.08);
+    }
+    h1{margin:0 0 10px;}
+    p{color:#6b7280; line-height:1.7;}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-btn" href="../index.html">← Back to Home</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eid Al-Fitr Greeting Card</title>
+
+<style>
+/* ===== LOAD CORPORATE FONTS ===== */
+@font-face{
+  font-family:"PingAR";
+  src:url("aktiv-grotesk-medium.otf") format("opentype");
+  font-weight:500;
+}
+@font-face{
+  font-family:"PingAR";
+  src:url("aktiv-grotesk-medium.otf") format("opentype");
+  font-weight:800;
+}
+
+/* ===== UI ===== */
+body{
+  font-family:"PingAR",system-ui;
+  background:#f6f8fb;
+  margin:0;
+}
+
+.wrapper{
+  max-width:620px;
+  margin:60px auto;
+  background:white;
+  padding:40px;
+  border-radius:18px;
+  box-shadow:0 12px 40px rgba(0,0,0,.08);
+}
+
+input{
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  margin-top:10px;
+}
+
+input:focus{
+  outline:none;
+  border-color:#254488;
+}
+
+button{
+  padding:12px 18px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  background:#254488;
+  color:white;
+  cursor:pointer;
+  margin-top:14px;
+}
+
+button:hover{opacity:.9;}
+
+canvas{
+  width:100%;
+  margin-top:25px;
+  border-radius:14px;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
+}
+</style>
+</head>
+
+<body>
+<div class="wrapper">
+  <h2>Eid Al-Fitr Greeting Card Generator</h2>
+
+  <input id="name" placeholder="Name | الاسم">
+  <input id="pos" placeholder="Position (optional)">
+
+  <button onclick="download()">Download</button>
+
+  <!-- UPDATED: square canvas -->
+  <canvas id="c" width="1080" height="1350"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+// ===== SETTINGS =====
+const IMAGE = "x.png";
+
+const NAME_SIZE = 36;        // tweak as needed
+const POS_SIZE  = 28;        // tweak as needed
+const LINE_GAP  = 16;        // gap between name and position
+
+const NAME_COLOR = "#FFFFFF";
+const POSITION_COLOR = "#ffffff";
+
+const OPTICAL_SHIFT_Y = 365; // negative moves block slightly up (looks better on square cards)
+
+// ===== LOAD IMAGE =====
+let bg = new Image();
+bg.src = IMAGE;
+
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+  const name = document.getElementById("name").value.trim();
+  const pos  = document.getElementById("pos").value.trim();
+  if(!name) return;
+
+  ctx.textAlign = "center";
+  ctx.direction = "rtl";
+
+  // --- Measure block height (name + optional position) ---
+  const nameLineHeight = NAME_SIZE; // good approximation for canvas layout
+  const posLineHeight  = POS_SIZE;
+
+  const hasPos = !!pos;
+  const totalHeight = hasPos
+    ? (nameLineHeight + LINE_GAP + posLineHeight)
+    : nameLineHeight;
+
+  // --- Compute vertically-centered baseline for the NAME line ---
+  // We place the block center at canvas center, then offset by half the block height.
+  const centerY = canvas.height / 2 + OPTICAL_SHIFT_Y;
+  
+  const topY = centerY - (totalHeight / 2);
+
+  // Baseline adjustment: add font size to approximate baseline position
+  const nameY = topY + NAME_SIZE;
+
+  // --- Draw NAME ---
+  ctx.fillStyle = NAME_COLOR;
+  ctx.font = `800 ${NAME_SIZE}px "PingAR"`;
+  ctx.fillText(name, canvas.width/2, nameY);
+
+  // --- Draw POSITION ---
+  if(hasPos){
+    const posY = nameY + LINE_GAP + POS_SIZE;
+    ctx.fillStyle = POSITION_COLOR;
+    ctx.font = `500 ${POS_SIZE}px "PingAR"`;
+    ctx.fillText(pos, canvas.width/2, posY);
+  }
+}
+
+function download(){
+  render();
+  const name = (document.getElementById("name").value || "greeting")
+    .trim()
+    .replace(/[^\w\u0600-\u06FF-]+/g, "_");
+
+  const a = document.createElement("a");
+  a.download = `greeting_${name}.png`;
+  a.href = canvas.toDataURL("image/png");
+  a.click();
+}
+
+// WAIT FOR FONTS + IMAGE
+Promise.all([
+  document.fonts.ready,
+  new Promise(res => bg.onload = res)
+]).then(() => render());
+
+// LIVE PREVIEW
+document.getElementById("name").addEventListener("input", render);
+document.getElementById("pos").addEventListener("input", render);
+</script>
+</body>
+</html>
+  </div>
+</body>
+</html>
