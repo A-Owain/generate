@@ -210,38 +210,6 @@
       margin-top: 24px;
     }
 
-    .search-wrap{
-      position: relative;
-      max-width: 420px;
-    }
-
-    .search{
-      width: 100%;
-      border: none;
-      outline: none;
-      padding: 16px 18px 16px 48px;
-      border-radius: 18px;
-      font-size: 15px;
-      background: rgba(255,255,255,0.88);
-      border: 1px solid rgba(17,24,39,0.06);
-      box-shadow: 0 12px 28px rgba(15,23,42,0.06);
-      color: var(--text);
-    }
-
-    .search::placeholder{
-      color: #98a2b3;
-    }
-
-    .search-icon{
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      color: var(--muted);
-      pointer-events: none;
-    }
-
     .section{
       margin-top: 28px;
     }
@@ -439,10 +407,6 @@
       .tool-desc{
         min-height: auto;
       }
-
-      .search-wrap{
-        max-width: 100%;
-      }
     }
   </style>
 </head>
@@ -496,13 +460,6 @@
           </div>
         </div>
       </div>
-
-      <div class="toolbar">
-        <div class="search-wrap">
-          <span class="search-icon">⌕</span>
-          <input id="searchInput" class="search" type="text" placeholder="Search tools..." />
-        </div>
-      </div>
     </section>
 
     <section class="section">
@@ -515,7 +472,7 @@
 
       <div class="grid">
 
-        <a class="tool-card" href="./ramadan/index.html" data-search="ramadan greeting card seasonal islamic month generator">
+        <a class="tool-card" href="./ramadan/index.html">
           <div class="tool-top">
             <div class="tool-icon">🌙</div>
             <div class="tool-tag">Seasonal</div>
@@ -533,7 +490,7 @@
           </div>
         </a>
 
-        <a class="tool-card" href="./eid-alfitr/index.html" data-search="eid al fitr greeting card celebration generator festive">
+        <a class="tool-card" href="./eid-alfitr/index.html">
           <div class="tool-top">
             <div class="tool-icon">✨</div>
             <div class="tool-tag">Celebration</div>
@@ -551,7 +508,7 @@
           </div>
         </a>
 
-        <a class="tool-card" data-search="eid al adha greeting card hajj festive generator">
+        <a class="tool-card">
           <div class="tool-top">
             <div class="tool-icon">🎉</div>
             <div class="tool-tag">Celebration</div>
@@ -569,10 +526,6 @@
         </a>
 
       </div>
-
-      <div id="emptyState" class="empty-state">
-        No tools matched your search.
-      </div>
     </section>
 
     <div class="footer">
@@ -580,27 +533,5 @@
     </div>
 
   </div>
-
-  <script>
-    const searchInput = document.getElementById("searchInput");
-    const cards = document.querySelectorAll(".tool-card");
-    const emptyState = document.getElementById("emptyState");
-
-    function applySearch() {
-      const q = searchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
-
-      cards.forEach(card => {
-        const searchable = (card.dataset.search || "").toLowerCase();
-        const matches = q === "" || searchable.includes(q);
-        card.style.display = matches ? "" : "none";
-        if (matches) visibleCount++;
-      });
-
-      emptyState.style.display = visibleCount === 0 ? "block" : "none";
-    }
-
-    searchInput.addEventListener("input", applySearch);
-  </script>
 </body>
 </html>
