@@ -112,7 +112,7 @@ canvas{
   <button onclick="download()">Download</button>
 
   <!-- UPDATED: square canvas -->
-  <canvas id="c" width="1080" height="1080"></canvas>
+  <canvas id="c" width="1080" height="1350"></canvas>
 </div>
 
 <script>
@@ -120,7 +120,7 @@ const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
 // ===== SETTINGS =====
-const IMAGE = "ramadan_card.png";
+const IMAGE = "adha.png";
 
 const NAME_SIZE = 36;        // tweak as needed
 const POS_SIZE  = 28;        // tweak as needed
@@ -129,7 +129,7 @@ const LINE_GAP  = 16;        // gap between name and position
 const NAME_COLOR = "#FFFFFF";
 const POSITION_COLOR = "#f0c31b";
 
-const OPTICAL_SHIFT_Y = 310; // negative moves block slightly up (looks better on square cards)
+const OPTICAL_SHIFT_Y = 460; // negative moves block slightly up (looks better on square cards)
 
 // ===== LOAD IMAGE =====
 let bg = new Image();
